@@ -22,9 +22,9 @@ export function App() {
   const [processedUrl, setProcessedUrl] = useState<string | null>(null)
 
   // Parameter state
-  const [params, setParams] = useState<NtscParams>({ ...DEFAULT_PARAMS })
+  const [params, setParams] = useState<NtscParams>({ ...DEFAULT_PARAMS, ...applyAxisPresets(COMBINED_PRESETS['vhs-ep-ghost']) })
   const [axes, setAxes] = useState<AxisPresets>({
-    ntsc: 'off', vhs: 'off', noise: 'off', ghost: 'off', colorBleed: 'off',
+    ...COMBINED_PRESETS['vhs-ep-ghost'],
   })
   const [settings, setSettings] = useState<ProcessingSettings>({
     resizeHeight: 480, crop: null, outputHeight: null,
