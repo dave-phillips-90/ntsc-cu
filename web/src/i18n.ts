@@ -48,7 +48,7 @@ export const messages: Record<Lang, Messages> = {
       '240p': '240p',
       proportional: 'Scale all',
       heightOnly: 'Height only',
-      heightOnlyDesc: 'Analog video has no horizontal pixel resolution — only scanline count matters',
+      heightOnlyDesc: 'Analog video has no horizontal pixel resolution — only scanline count matters. Use "Original size" output to restore correct aspect ratio.',
     },
 
     crop: {
@@ -279,7 +279,7 @@ export const messages: Record<Lang, Messages> = {
       '240p': '240p',
       proportional: '縦横',
       heightOnly: '縦のみ',
-      heightOnlyDesc: 'アナログ映像には横のピクセル解像度がなく、走査線数（縦）のみが解像度を決定します',
+      heightOnlyDesc: 'アナログ映像には横のピクセル解像度がなく、走査線数（縦）のみが解像度を決定します。出力を「元のサイズ」にするとアスペクト比が復元されます。',
     },
 
     crop: {
