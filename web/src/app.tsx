@@ -185,6 +185,19 @@ export function App() {
     a.click()
   }, [processedUrl])
 
+  // Share
+  const handleShare = useCallback(async () => {
+    if (!processedUrl) return
+    const res = await fetch(processedUrl)
+    const blob = await res.blob()
+    const file = new File([blob], 'ntsc_output.png', { type: 'image/png' })
+    try {
+      await navigator.share({ files: [file] })
+    } catch (_) {
+      // User cancelled or share failed
+    }
+  }, [processedUrl])
+
   return (
     <Flex
       h="100vh"
@@ -224,9 +237,16 @@ export function App() {
             {t('app.apply')}
           </Button>
           {processedUrl && (
-            <Button variant="outline" onClick={handleDownload}>
-              {t('app.download')}
-            </Button>
+            <>
+              <Button variant="outline" onClick={handleDownload}>
+                {t('app.download')}
+              </Button>
+              {typeof navigator !== 'undefined' && navigator.canShare?.({ files: [new File([], '')] }) && (
+                <Button variant="outline" onClick={handleShare}>
+                  {t('app.share')}
+                </Button>
+              )}
+            </>
           )}
           <Checkbox.Root checked={realtime} onCheckedChange={(e) => setRealtime(!!e.checked)}>
             <Checkbox.HiddenInput />
