@@ -218,21 +218,16 @@ export function App() {
         )}
 
         <ImageInput onImageLoad={handleImageLoad} />
-        <ResizeControls settings={settings} onChange={setSettings} />
-        <CropControl
-          originalUrl={originalUrl}
-          imageSize={imageSize}
-          crop={settings.crop}
-          onChange={crop => setSettings(s => ({ ...s, crop }))}
-        />
-        <PresetBar onSelect={handlePreset} />
-        <AxisControls axes={axes} onChange={handleAxesChange} />
-        <DetailControls params={params} onChange={setParams} />
 
         <Flex gap="2" alignItems="center" flexWrap="wrap">
           <Button onClick={process} disabled={!imageData || !workerReady || processing}>
             {t('app.apply')}
           </Button>
+          {processedUrl && (
+            <Button variant="outline" onClick={handleDownload}>
+              {t('app.download')}
+            </Button>
+          )}
           <Checkbox.Root checked={realtime} onCheckedChange={(e) => setRealtime(!!e.checked)}>
             <Checkbox.HiddenInput />
             <Checkbox.Control />
@@ -240,11 +235,16 @@ export function App() {
           </Checkbox.Root>
         </Flex>
 
-        {processedUrl && (
-          <Button variant="outline" onClick={handleDownload}>
-            {t('app.download')}
-          </Button>
-        )}
+        <PresetBar onSelect={handlePreset} />
+        <AxisControls axes={axes} onChange={handleAxesChange} />
+        <ResizeControls settings={settings} onChange={setSettings} />
+        <CropControl
+          originalUrl={originalUrl}
+          imageSize={imageSize}
+          crop={settings.crop}
+          onChange={crop => setSettings(s => ({ ...s, crop }))}
+        />
+        <DetailControls params={params} onChange={setParams} />
       </Box>
 
       {/* Right Panel */}
