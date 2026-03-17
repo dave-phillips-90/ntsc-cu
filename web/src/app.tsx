@@ -73,6 +73,27 @@ export function App() {
     return () => worker.terminate()
   }, [])
 
+  // Load sample image on startup
+  useEffect(() => {
+    const img = new Image()
+    img.onload = () => {
+      const canvas = document.createElement('canvas')
+      canvas.width = img.width
+      canvas.height = img.height
+      const ctx = canvas.getContext('2d')!
+      ctx.drawImage(img, 0, 0)
+      canvas.toBlob((blob) => {
+        if (!blob) return
+        blob.arrayBuffer().then(buf => {
+          setImageData(new Uint8Array(buf))
+          setImageSize({ width: img.width, height: img.height })
+          setOriginalUrl(URL.createObjectURL(blob))
+        })
+      }, 'image/png')
+    }
+    img.src = import.meta.env.BASE_URL + 'sample.jpg'
+  }, [])
+
   // Process function
   const process = useCallback(() => {
     if (!imageData || !imageSize || !workerRef.current || !workerReady) return
