@@ -80,6 +80,7 @@ export function AxisControls({ axes, onChange }: Props) {
           { label: t('axisLevel.off'), value: 'off' },
           { label: t('axisLevel.light'), value: 'light' },
           { label: t('axisLevel.heavy'), value: 'heavy' },
+          { label: t('axisLevel.extreme'), value: 'extreme' },
         ]}
         onChange={v => onChange({ ...axes, ghost: v as AxisPresets['ghost'] })}
       />

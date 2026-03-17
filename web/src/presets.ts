@@ -99,6 +99,9 @@ export function applyAxisPresets(axes: AxisPresets): Partial<NtscParams> {
     case 'heavy':
       p.ringing = 0.75
       break
+    case 'extreme':
+      p.ringing = 0.55
+      break
   }
 
   // Color bleed
@@ -127,7 +130,7 @@ export const COMBINED_PRESETS: Record<Exclude<CombinedPresetName, 'random'>, Axi
   'vhs-standard-ghost':{ ntsc: 'standard', vhs: 'SP',  noise: 'light', ghost: 'heavy', colorBleed: 'off' },
   'vhs-lp':            { ntsc: 'standard', vhs: 'LP',  noise: 'off',   ghost: 'off',   colorBleed: 'off' },
   'vhs-triple-speed':  { ntsc: 'standard', vhs: 'EP',  noise: 'off',   ghost: 'off',   colorBleed: 'off' },
-  'vhs-ep-ghost':      { ntsc: 'standard', vhs: 'EP',  noise: 'light', ghost: 'heavy',  colorBleed: 'off' },
+  'vhs-ep-ghost':      { ntsc: 'standard', vhs: 'EP',  noise: 'light', ghost: 'extreme', colorBleed: 'off' },
   'worn-tape':         { ntsc: 'standard', vhs: 'EP',  noise: 'heavy', ghost: 'light',  colorBleed: 'light' },
 }
 

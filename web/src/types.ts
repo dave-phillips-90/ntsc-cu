@@ -58,7 +58,7 @@ export interface ProcessingSettings {
   outputHeight: number | null        // null = same as processing
 }
 
-export type AxisLevel = 'off' | 'light' | 'heavy'
+export type AxisLevel = 'off' | 'light' | 'heavy' | 'extreme'
 export type VhsAxisLevel = 'off' | 'SP' | 'LP' | 'EP'
 
 export interface AxisPresets {
