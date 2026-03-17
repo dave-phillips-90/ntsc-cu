@@ -40,7 +40,7 @@ export function App() {
   useEffect(() => {
     const worker = new Worker(
       new URL('./worker/ntsc-worker.ts', import.meta.url),
-      { type: 'classic' }
+      { type: 'module' }
     )
     worker.onmessage = (e: MessageEvent<WorkerOutMessage>) => {
       const msg = e.data

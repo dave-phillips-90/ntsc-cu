@@ -9,11 +9,9 @@ function post(msg: WorkerOutMessage, transfer?: Transferable[]) {
 }
 
 async function initialize() {
-  // @ts-ignore - importScripts is available in workers
-  importScripts('https://cdn.jsdelivr.net/pyodide/v0.27.4/full/pyodide.js')
-
-  // @ts-ignore - loadPyodide is globally available after importScripts
-  pyodide = await loadPyodide()
+  // Load Pyodide via dynamic import (ES module worker)
+  const { loadPyodide: _loadPyodide } = await import('https://cdn.jsdelivr.net/pyodide/v0.27.4/full/pyodide.mjs')
+  pyodide = await _loadPyodide()
   await pyodide.loadPackage(['numpy', 'scipy', 'opencv-python'])
 
   // Fetch ntsc.py and ringPattern.npy from same origin
@@ -39,38 +37,42 @@ import numpy as np
   post({ type: 'ready' })
 }
 
+function pyBool(v: boolean): string {
+  return v ? 'True' : 'False'
+}
+
 function buildPythonParams(params: NtscParams): string {
   const vhsSpeedMap = { SP: 'ntsc.VHSSpeed.VHS_SP', LP: 'ntsc.VHSSpeed.VHS_LP', EP: 'ntsc.VHSSpeed.VHS_EP' }
   return `
 n = ntsc.Ntsc(random=ntsc.NumpyRandom(${params.seed ?? 'None'}))
 n._composite_preemphasis = ${params.compositePreemphasis}
 n._composite_preemphasis_cut = ${params.compositePreemphasisCut}
-n._composite_in_chroma_lowpass = ${params.chromaLowpassIn}
-n._composite_out_chroma_lowpass = ${params.chromaLowpassOut}
-n._composite_out_chroma_lowpass_lite = ${params.chromaLowpassOutLite}
+n._composite_in_chroma_lowpass = ${pyBool(params.chromaLowpassIn)}
+n._composite_out_chroma_lowpass = ${pyBool(params.chromaLowpassOut)}
+n._composite_out_chroma_lowpass_lite = ${pyBool(params.chromaLowpassOutLite)}
 n._video_noise = ${params.videoNoise}
 n._video_chroma_noise = ${params.chromaNoise}
 n._video_chroma_phase_noise = ${params.chromaPhaseNoise}
 n._video_chroma_loss = ${params.chromaLoss}
 n._ringing = ${params.ringing}
-n._enable_ringing2 = ${params.enableRinging2}
+n._enable_ringing2 = ${pyBool(params.enableRinging2)}
 n._ringing_power = ${params.ringingPower}
 n._ringing_shift = ${params.ringingShift}
 n._freq_noise_size = ${params.freqNoiseSize}
 n._freq_noise_amplitude = ${params.freqNoiseAmplitude}
 n._color_bleed_horiz = ${params.colorBleedHoriz}
 n._color_bleed_vert = ${params.colorBleedVert}
-n._color_bleed_before = ${params.colorBleedBefore}
+n._color_bleed_before = ${pyBool(params.colorBleedBefore)}
 n._subcarrier_amplitude = ${params.subcarrierAmplitude}
 n._subcarrier_amplitude_back = ${params.subcarrierAmplitudeBack}
 n._video_scanline_phase_shift = ${params.scanlinePhaseShift}
 n._video_scanline_phase_shift_offset = ${params.scanlinePhaseShiftOffset}
-n._emulating_vhs = ${params.emulatingVhs}
+n._emulating_vhs = ${pyBool(params.emulatingVhs)}
 n._output_vhs_tape_speed = ${vhsSpeedMap[params.vhsTapeSpeed]}
 n._vhs_out_sharpen = ${params.vhsSharpen}
 n._vhs_edge_wave = ${params.vhsEdgeWave}
-n._vhs_chroma_vert_blend = ${params.vhsChromaVertBlend}
-n._vhs_svideo_out = ${params.vhsSvideoOut}
+n._vhs_chroma_vert_blend = ${pyBool(params.vhsChromaVertBlend)}
+n._vhs_svideo_out = ${pyBool(params.vhsSvideoOut)}
 `
 }
 
