@@ -27,7 +27,7 @@ export function App() {
     ...COMBINED_PRESETS['vhs-ep-ghost'],
   })
   const [settings, setSettings] = useState<ProcessingSettings>({
-    resizeHeight: 480, resizeHeightOnly: false, crop: null, outputHeight: null,
+    resizeHeight: 486, resizeHeightOnly: false, crop: null, outputHeight: null,
   })
 
   // UI state

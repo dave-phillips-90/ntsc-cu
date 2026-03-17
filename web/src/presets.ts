@@ -61,12 +61,14 @@ export function applyAxisPresets(axes: AxisPresets): Partial<NtscParams> {
   switch (axes.vhs) {
     case 'off':
       p.emulatingVhs = false
+      p.vhsHeadSwitching = false
       break
     case 'SP':
     case 'LP':
     case 'EP':
       p.emulatingVhs = true
       p.vhsTapeSpeed = axes.vhs
+      p.vhsHeadSwitching = true
       break
   }
 
