@@ -80,22 +80,16 @@ n._vhs_svideo_out = ${pyBool(params.vhsSvideoOut)}
 function buildProcessingCode(settings: ProcessingSettings, passes: number): string {
   let code = ''
 
-  // Crop
+  // Crop (percent-based)
   if (settings.crop) {
-    const [cw, ch] = settings.crop.split(':').map(Number)
+    const { x, y, width, height } = settings.crop
     code += `
-cw, ch = ${cw}, ${ch}
 h, w = img.shape[:2]
-target_ratio = cw / ch
-current_ratio = w / h
-if current_ratio > target_ratio:
-    new_w = int(h * target_ratio)
-    x_off = (w - new_w) // 2
-    img = img[:, x_off:x_off + new_w]
-else:
-    new_h = int(w / target_ratio)
-    y_off = (h - new_h) // 2
-    img = img[y_off:y_off + new_h, :]
+cx = int(w * ${x} / 100)
+cy = int(h * ${y} / 100)
+cw = int(w * ${width} / 100)
+ch = int(h * ${height} / 100)
+img = img[cy:cy+ch, cx:cx+cw]
 `
   }
 

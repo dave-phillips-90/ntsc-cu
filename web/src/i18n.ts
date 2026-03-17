@@ -46,6 +46,7 @@ export const messages: Record<Lang, Messages> = {
 
     crop: {
       none: 'None',
+      free: 'Free',
     },
 
     output: {
@@ -268,7 +269,8 @@ export const messages: Record<Lang, Messages> = {
     },
 
     crop: {
-      none: '\u306a\u3057',
+      none: 'なし',
+      free: '自由',
     },
 
     output: {

@@ -3,6 +3,7 @@ import { Box, Flex, Heading, Button, Checkbox } from '@chakra-ui/react'
 import { useI18n } from './i18n'
 import { ImageInput } from './components/ImageInput'
 import { ResizeControls } from './components/ResizeControls'
+import { CropControl } from './components/CropControl'
 import { PresetBar } from './components/PresetBar'
 import { AxisControls } from './components/AxisControls'
 import { DetailControls } from './components/DetailControls'
@@ -115,20 +116,12 @@ export function App() {
     img.onload = () => {
       let sx = 0, sy = 0, sw = img.width, sh = img.height
 
-      // Apply crop
+      // Apply crop (percent-based)
       if (settings.crop) {
-        const [cw, ch] = settings.crop.split(':').map(Number)
-        const targetRatio = cw / ch
-        const currentRatio = sw / sh
-        if (currentRatio > targetRatio) {
-          const newW = Math.floor(sh * targetRatio)
-          sx = Math.floor((sw - newW) / 2)
-          sw = newW
-        } else {
-          const newH = Math.floor(sw / targetRatio)
-          sy = Math.floor((sh - newH) / 2)
-          sh = newH
-        }
+        sx = Math.floor(img.width * settings.crop.x / 100)
+        sy = Math.floor(img.height * settings.crop.y / 100)
+        sw = Math.floor(img.width * settings.crop.width / 100)
+        sh = Math.floor(img.height * settings.crop.height / 100)
       }
 
       // Determine output size
@@ -222,6 +215,12 @@ export function App() {
 
         <ImageInput onImageLoad={handleImageLoad} />
         <ResizeControls settings={settings} onChange={setSettings} />
+        <CropControl
+          originalUrl={originalUrl}
+          imageSize={imageSize}
+          crop={settings.crop}
+          onChange={crop => setSettings(s => ({ ...s, crop }))}
+        />
         <PresetBar onSelect={handlePreset} />
         <AxisControls axes={axes} onChange={handleAxesChange} />
         <DetailControls params={params} onChange={setParams} />

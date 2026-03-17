@@ -44,9 +44,16 @@ export interface NtscParams {
   seed: number | null
 }
 
+export interface CropArea {
+  x: number      // percent 0-100
+  y: number      // percent 0-100
+  width: number  // percent 0-100
+  height: number // percent 0-100
+}
+
 export interface ProcessingSettings {
   resizeHeight: number | null        // null = original
-  crop: '4:3' | '3:2' | '16:9' | null
+  crop: CropArea | null              // null = no crop
   outputHeight: number | null        // null = same as processing
 }
 
