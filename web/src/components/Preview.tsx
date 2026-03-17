@@ -1,6 +1,7 @@
 import { useState, useCallback } from 'preact/hooks'
 import { Box, Button, Text } from '@chakra-ui/react'
 import { useI18n } from '../i18n'
+import type { CropArea } from '../types'
 
 type FitMode = 'original' | 'processed'
 
@@ -10,6 +11,7 @@ interface Props {
   processedUrl: string | null
   processing: boolean
   error: string | null
+  crop: CropArea | null
   onImageLoad?: (imageData: Uint8Array, width: number, height: number, originalUrl: string) => void
 }
 
@@ -33,7 +35,7 @@ function processFile(file: File, onImageLoad: Props['onImageLoad']) {
   img.src = url
 }
 
-export function Preview({ originalUrl, croppedOriginalUrl, processedUrl, processing, error, onImageLoad }: Props) {
+export function Preview({ originalUrl, croppedOriginalUrl, processedUrl, processing, error, crop, onImageLoad }: Props) {
   const [opacity, setOpacity] = useState(100)
   const [fitMode, setFitMode] = useState<FitMode>('processed')
   const [dragOver, setDragOver] = useState(false)
@@ -157,20 +159,36 @@ export function Preview({ originalUrl, croppedOriginalUrl, processedUrl, process
               style={{ display: 'block', maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }}
             />
             {/* Overlay image */}
-            <img
-              src={overlayImg}
-              style={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                width: '100%',
-                height: '100%',
-                objectFit: 'contain',
-                opacity: fitMode === 'original'
-                  ? opacity / 100        // original is base, processed overlay: 0=original, 100=processed
-                  : 1 - opacity / 100,    // processed is base, original overlay: 0=original, 100=processed
-              }}
-            />
+            {fitMode === 'original' && crop ? (
+              // Processed image is cropped, position it at the crop location over the original
+              <img
+                src={processedUrl!}
+                style={{
+                  position: 'absolute',
+                  left: `${crop.x}%`,
+                  top: `${crop.y}%`,
+                  width: `${crop.width}%`,
+                  height: `${crop.height}%`,
+                  objectFit: 'fill',
+                  opacity: opacity / 100,
+                }}
+              />
+            ) : (
+              <img
+                src={overlayImg}
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'contain',
+                  opacity: fitMode === 'original'
+                    ? opacity / 100
+                    : 1 - opacity / 100,
+                }}
+              />
+            )}
           </Box>
         ) : (
           <img

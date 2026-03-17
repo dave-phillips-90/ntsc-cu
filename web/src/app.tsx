@@ -255,6 +255,7 @@ export function App() {
           processedUrl={processedUrl}
           processing={processing}
           error={error}
+          crop={settings.crop}
           onImageLoad={handleImageLoad}
         />
       </Box>
