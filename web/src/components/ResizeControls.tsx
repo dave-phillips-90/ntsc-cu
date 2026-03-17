@@ -1,4 +1,4 @@
-import { Box, Heading, Text } from '@chakra-ui/react'
+import { Box, Button, Heading, Text } from '@chakra-ui/react'
 import { useI18n } from '../i18n'
 import type { ProcessingSettings } from '../types'
 
@@ -9,43 +9,53 @@ interface Props {
 
 export function ResizeControls({ settings, onChange }: Props) {
   const { t } = useI18n()
+
+  const resolutions: { label: string; value: number | null }[] = [
+    { label: t('resolution.original'), value: null },
+    { label: t('resolution.960p'), value: 960 },
+    { label: t('resolution.480p'), value: 480 },
+    { label: t('resolution.240p'), value: 240 },
+  ]
+
+  const outputs: { label: string; value: number | null }[] = [
+    { label: t('output.sameAsProcessing'), value: null },
+    { label: t('output.originalSize'), value: -1 },
+  ]
+
   return (
     <Box display="flex" flexDirection="column" gap="3">
       <Heading size="sm" fontWeight="semibold">{t('section.processingSettings')}</Heading>
 
-      <Box as="label" fontSize="sm" display="flex" flexDirection="column" gap="1">
+      <Box display="flex" flexDirection="column" gap="1">
         <Text fontSize="sm">{t('processingSettings.resolution')}</Text>
-        <select
-          value={settings.resizeHeight?.toString() ?? ''}
-          onChange={e => onChange({
-            ...settings,
-            resizeHeight: e.currentTarget.value ? Number(e.currentTarget.value) : null,
-          })}
-          style={{ width: '100%', padding: '4px 8px', borderRadius: '4px', border: '1px solid #555', background: 'transparent', color: 'inherit' }}
-        >
-          <option value="">{t('resolution.original')}</option>
-          <option value="960">{t('resolution.960p')}</option>
-          <option value="480">{t('resolution.480p')}</option>
-          <option value="240">{t('resolution.240p')}</option>
-        </select>
+        <Box display="flex" gap="1" flexWrap="wrap">
+          {resolutions.map(r => (
+            <Button
+              key={r.label}
+              size="xs"
+              variant={settings.resizeHeight === r.value ? 'solid' : 'outline'}
+              onClick={() => onChange({ ...settings, resizeHeight: r.value })}
+            >
+              {r.label}
+            </Button>
+          ))}
+        </Box>
       </Box>
 
-      <Box as="label" fontSize="sm" display="flex" flexDirection="column" gap="1">
+      <Box display="flex" flexDirection="column" gap="1">
         <Text fontSize="sm">{t('processingSettings.output')}</Text>
-        <select
-          value={settings.outputHeight === -1 ? 'original' : settings.outputHeight?.toString() ?? ''}
-          onChange={e => {
-            const v = e.currentTarget.value
-            onChange({
-              ...settings,
-              outputHeight: v === 'original' ? -1 : v ? Number(v) : null,
-            })
-          }}
-          style={{ width: '100%', padding: '4px 8px', borderRadius: '4px', border: '1px solid #555', background: 'transparent', color: 'inherit' }}
-        >
-          <option value="">{t('output.sameAsProcessing')}</option>
-          <option value="original">{t('output.originalSize')}</option>
-        </select>
+        <Box display="flex" gap="1" flexWrap="wrap">
+          {outputs.map(o => (
+            <Button
+              key={o.label}
+              size="xs"
+              variant={settings.outputHeight === o.value ? 'solid' : 'outline'}
+              onClick={() => onChange({ ...settings, outputHeight: o.value })}
+            >
+              {o.label}
+            </Button>
+          ))}
+        </Box>
       </Box>
     </Box>
   )
