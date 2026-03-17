@@ -16,6 +16,7 @@ export function App() {
   const [imageData, setImageData] = useState<Uint8Array | null>(null)
   const [imageSize, setImageSize] = useState<{ width: number; height: number } | null>(null)
   const [originalUrl, setOriginalUrl] = useState<string | null>(null)
+  const [croppedOriginalUrl, setCroppedOriginalUrl] = useState<string | null>(null)
   const [processedUrl, setProcessedUrl] = useState<string | null>(null)
 
   // Parameter state
@@ -97,6 +98,60 @@ export function App() {
     debounceRef.current = window.setTimeout(process, 300)
     return () => { if (debounceRef.current) clearTimeout(debounceRef.current) }
   }, [realtime, params, settings, process])
+
+  // Generate cropped/resized version of original for comparison
+  useEffect(() => {
+    if (!originalUrl || !imageSize) {
+      setCroppedOriginalUrl(null)
+      return
+    }
+    // If no crop and no resize, cropped = original
+    if (!settings.crop && !settings.resizeHeight) {
+      setCroppedOriginalUrl(null)
+      return
+    }
+
+    const img = new Image()
+    img.onload = () => {
+      let sx = 0, sy = 0, sw = img.width, sh = img.height
+
+      // Apply crop
+      if (settings.crop) {
+        const [cw, ch] = settings.crop.split(':').map(Number)
+        const targetRatio = cw / ch
+        const currentRatio = sw / sh
+        if (currentRatio > targetRatio) {
+          const newW = Math.floor(sh * targetRatio)
+          sx = Math.floor((sw - newW) / 2)
+          sw = newW
+        } else {
+          const newH = Math.floor(sw / targetRatio)
+          sy = Math.floor((sh - newH) / 2)
+          sh = newH
+        }
+      }
+
+      // Determine output size
+      let outW = sw, outH = sh
+      if (settings.resizeHeight) {
+        outH = settings.resizeHeight
+        outW = Math.floor(sw * outH / sh)
+        // Ensure even
+        outW = Math.floor(outW / 2) * 2
+        outH = Math.floor(outH / 2) * 2
+      }
+
+      const canvas = document.createElement('canvas')
+      canvas.width = outW
+      canvas.height = outH
+      const ctx = canvas.getContext('2d')!
+      ctx.drawImage(img, sx, sy, sw, sh, 0, 0, outW, outH)
+
+      const url = canvas.toDataURL('image/png')
+      setCroppedOriginalUrl(prev => { if (prev && prev.startsWith('blob:')) URL.revokeObjectURL(prev); return url })
+    }
+    img.src = originalUrl
+  }, [originalUrl, imageSize, settings.crop, settings.resizeHeight])
 
   // Handle image load
   const handleImageLoad = useCallback((data: Uint8Array, width: number, height: number, url: string) => {
@@ -193,6 +248,7 @@ export function App() {
       <Box flex="1" minW="0">
         <Preview
           originalUrl={originalUrl}
+          croppedOriginalUrl={croppedOriginalUrl}
           processedUrl={processedUrl}
           processing={processing}
           error={error}

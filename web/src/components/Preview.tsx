@@ -6,6 +6,7 @@ type FitMode = 'original' | 'processed'
 
 interface Props {
   originalUrl: string | null
+  croppedOriginalUrl: string | null
   processedUrl: string | null
   processing: boolean
   error: string | null
@@ -32,7 +33,7 @@ function processFile(file: File, onImageLoad: Props['onImageLoad']) {
   img.src = url
 }
 
-export function Preview({ originalUrl, processedUrl, processing, error, onImageLoad }: Props) {
+export function Preview({ originalUrl, croppedOriginalUrl, processedUrl, processing, error, onImageLoad }: Props) {
   const [opacity, setOpacity] = useState(100)
   const [fitMode, setFitMode] = useState<FitMode>('processed')
   const [dragOver, setDragOver] = useState(false)
@@ -82,8 +83,10 @@ export function Preview({ originalUrl, processedUrl, processing, error, onImageL
   }
 
   const hasComparison = !!processedUrl
+  // When fitting to processed, use the cropped original so sizes match
+  const compOriginal = (fitMode === 'processed' && croppedOriginalUrl) ? croppedOriginalUrl : originalUrl
   const baseImg = fitMode === 'original' ? originalUrl : processedUrl!
-  const overlayImg = fitMode === 'original' ? processedUrl! : originalUrl
+  const overlayImg = fitMode === 'original' ? processedUrl! : compOriginal
 
   return (
     <Box {...dropProps} display="flex" flexDirection="column" gap="2" h="full">
