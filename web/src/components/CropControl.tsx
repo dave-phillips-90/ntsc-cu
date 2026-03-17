@@ -78,13 +78,22 @@ export function CropControl({ originalUrl, imageSize, crop, onChange }: Props) {
   }, [onChange])
 
   // When image changes, recalculate crop for new aspect ratio
+  const prevImageSizeRef = useRef(imageSize)
   useEffect(() => {
-    if (showCrop && aspect !== undefined && imageSize) {
+    const prev = prevImageSizeRef.current
+    prevImageSizeRef.current = imageSize
+    if (!showCrop || !imageSize) return
+
+    if (aspect !== undefined) {
       handleAspectChange(aspect)
-    } else if (showCrop && aspect === undefined) {
-      // Free crop: reset to no crop on image change
-      setReactCrop(undefined)
-      onChange(null)
+    } else {
+      // Free crop: only reset if aspect ratio changed
+      const prevRatio = prev ? prev.width / prev.height : null
+      const newRatio = imageSize.width / imageSize.height
+      if (prevRatio === null || Math.abs(prevRatio - newRatio) > 0.01) {
+        setReactCrop(undefined)
+        onChange(null)
+      }
     }
   }, [originalUrl, imageSize])
 
