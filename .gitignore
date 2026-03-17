@@ -104,3 +104,17 @@ venv.bak/
 .mypy_cache/
 
 .idea/
+.claude/
+
+# Test output images
+out_*.png
+out_*.jpg
+ss_*.png
+test_*.png
+test_*.jpg
+vrc_*.png
+vrc2_*.png
+
+# User images
+VRChat_*.png
+2024-*.png
