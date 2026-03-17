@@ -71,7 +71,9 @@ export interface AxisPresets {
 
 export type CombinedPresetName =
   | 'clean-broadcast'
+  | 'broadcast-ghost'
   | 'vhs-standard'
+  | 'vhs-standard-ghost'
   | 'vhs-lp'
   | 'vhs-triple-speed'
   | 'vhs-ep-ghost'

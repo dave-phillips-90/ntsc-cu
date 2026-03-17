@@ -122,7 +122,9 @@ export function applyAxisPresets(axes: AxisPresets): Partial<NtscParams> {
 
 export const COMBINED_PRESETS: Record<Exclude<CombinedPresetName, 'random'>, AxisPresets> = {
   'clean-broadcast':   { ntsc: 'standard', vhs: 'off', noise: 'off',   ghost: 'off',   colorBleed: 'off' },
+  'broadcast-ghost':   { ntsc: 'standard', vhs: 'off', noise: 'light', ghost: 'heavy', colorBleed: 'off' },
   'vhs-standard':      { ntsc: 'standard', vhs: 'SP',  noise: 'off',   ghost: 'off',   colorBleed: 'off' },
+  'vhs-standard-ghost':{ ntsc: 'standard', vhs: 'SP',  noise: 'light', ghost: 'heavy', colorBleed: 'off' },
   'vhs-lp':            { ntsc: 'standard', vhs: 'LP',  noise: 'off',   ghost: 'off',   colorBleed: 'off' },
   'vhs-triple-speed':  { ntsc: 'standard', vhs: 'EP',  noise: 'off',   ghost: 'off',   colorBleed: 'off' },
   'vhs-ep-ghost':      { ntsc: 'standard', vhs: 'EP',  noise: 'light', ghost: 'heavy',  colorBleed: 'off' },
@@ -131,7 +133,9 @@ export const COMBINED_PRESETS: Record<Exclude<CombinedPresetName, 'random'>, Axi
 
 export const COMBINED_PRESET_LABELS: Record<CombinedPresetName, string> = {
   'clean-broadcast': 'Clean Broadcast',
+  'broadcast-ghost': 'Broadcast + Ghost',
   'vhs-standard': 'VHS Standard',
+  'vhs-standard-ghost': 'VHS Standard + Ghost',
   'vhs-lp': 'VHS LP',
   'vhs-triple-speed': 'VHS Triple Speed',
   'vhs-ep-ghost': 'VHS EP + Ghost',

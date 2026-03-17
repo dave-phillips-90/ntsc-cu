@@ -64,7 +64,9 @@ export const messages: Record<Lang, Messages> = {
     preset: {
       heading: 'Presets',
       'clean-broadcast': 'Clean Broadcast',
+      'broadcast-ghost': 'Broadcast + Ghost',
       'vhs-standard': 'VHS Standard',
+      'vhs-standard-ghost': 'VHS Standard + Ghost',
       'vhs-lp': 'VHS LP',
       'vhs-triple-speed': 'VHS Triple Speed',
       'vhs-ep-ghost': 'VHS EP + Ghost',
@@ -294,8 +296,10 @@ export const messages: Record<Lang, Messages> = {
 
     preset: {
       heading: '\u30d7\u30ea\u30bb\u30c3\u30c8',
-      'clean-broadcast': '\u30af\u30ea\u30fc\u30f3\u653e\u9001',
+      'clean-broadcast': 'クリーン放送',
+      'broadcast-ghost': '放送 + ゴースト',
       'vhs-standard': 'VHS 標準',
+      'vhs-standard-ghost': 'VHS 標準 + ゴースト',
       'vhs-lp': 'VHS 2倍',
       'vhs-triple-speed': 'VHS 3倍',
       'vhs-ep-ghost': 'VHS 3倍 + ゴースト',
