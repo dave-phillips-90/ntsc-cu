@@ -30,9 +30,21 @@ jobs:
         working-directory: web
         run: npm ci
 
+      - name: Detect base path
+        id: base
+        run: |
+          # Use '/' for custom domains (CNAME exists), otherwise '/<repo-name>/'
+          if [ -f web/public/CNAME ] || [ -f CNAME ]; then
+            echo "path=/" >> "$GITHUB_OUTPUT"
+          else
+            echo "path=/${GITHUB_REPOSITORY#*/}/" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Build
         working-directory: web
         run: npm run build
+        env:
+          VITE_BASE_PATH: ${{ steps.base.outputs.path }}
 
       - uses: actions/upload-pages-artifact@v3
         with:
