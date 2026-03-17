@@ -214,15 +214,22 @@ export function App() {
         flexDirection="column"
         gap="4"
       >
-        <Flex alignItems="center" gap="2" flexWrap="wrap">
-          <Heading size="xl" fontWeight="bold">{t('app.title')}</Heading>
-          <a href="https://github.com/Narazaka/ntsc" target="_blank" rel="noopener noreferrer" title="GitHub" style={{ display: 'flex', alignItems: 'center', color: 'inherit' }}>
-            <Github size={20} />
-          </a>
-          <Button size="xs" variant="outline" onClick={() => setLang(lang === 'en' ? 'ja' : 'en')}>
-            {lang === 'en' ? 'JA' : 'EN'}
-          </Button>
-        </Flex>
+        <Box>
+          <Flex alignItems="center" gap="2" flexWrap="wrap">
+            <Heading size="xl" fontWeight="bold">{t('app.title')}</Heading>
+            <a href="https://github.com/Narazaka/ntsc" target="_blank" rel="noopener noreferrer" title="GitHub" style={{ display: 'flex', alignItems: 'center', color: 'inherit' }}>
+              <Github size={20} />
+            </a>
+            <Button size="xs" variant="outline" onClick={() => setLang(lang === 'en' ? 'ja' : 'en')}>
+              {lang === 'en' ? 'JA' : 'EN'}
+            </Button>
+          </Flex>
+          <Box fontSize="xs" color="fg.muted" mt="1">
+            {t('app.subtitleBefore')}
+            <a href="https://github.com/zhuker/ntsc" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'underline' }}>{t('app.subtitleLink')}</a>
+            {t('app.subtitleAfter')}
+          </Box>
+        </Box>
 
         {!workerReady && (
           <Box p="3" bg="bg.muted" borderRadius="md" fontSize="sm">

@@ -19,6 +19,9 @@ export const messages: Record<Lang, Messages> = {
   en: {
     app: {
       title: 'NTSC/VHS Effect',
+      subtitleBefore: 'A web UI for ',
+      subtitleLink: 'zhuker/ntsc',
+      subtitleAfter: ' — NTSC/VHS video artifact emulator',
       loading: 'Loading Pyodide... (this may take a moment)',
       apply: 'Apply',
       download: 'Download PNG',
@@ -243,8 +246,11 @@ export const messages: Record<Lang, Messages> = {
   // ==========================================================================
   ja: {
     app: {
-      title: 'NTSC/VHS \u30a8\u30d5\u30a7\u30af\u30c8',
-      loading: 'Pyodide \u3092\u8aad\u307f\u8fbc\u307f\u4e2d\u2026\uff08\u5c11\u3005\u304a\u5f85\u3061\u304f\u3060\u3055\u3044\uff09',
+      title: 'NTSC/VHS エフェクト',
+      subtitleBefore: '',
+      subtitleLink: 'zhuker/ntsc',
+      subtitleAfter: ' をブラウザで使えるようにしたものです',
+      loading: 'Pyodide を読み込み中…（少々お待ちください）',
       apply: '\u9069\u7528',
       download: 'PNG ダウンロード',
       share: '共有',
