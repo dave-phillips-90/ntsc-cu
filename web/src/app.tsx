@@ -235,8 +235,6 @@ export function App() {
           </Checkbox.Root>
         </Flex>
 
-        <PresetBar onSelect={handlePreset} />
-        <AxisControls axes={axes} onChange={handleAxesChange} />
         <ResizeControls settings={settings} onChange={setSettings} />
         <CropControl
           originalUrl={originalUrl}
@@ -244,6 +242,8 @@ export function App() {
           crop={settings.crop}
           onChange={crop => setSettings(s => ({ ...s, crop }))}
         />
+        <PresetBar onSelect={handlePreset} />
+        <AxisControls axes={axes} onChange={handleAxesChange} />
         <DetailControls params={params} onChange={setParams} />
       </Box>
 
