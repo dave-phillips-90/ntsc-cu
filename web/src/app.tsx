@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'preact/hooks'
 import { Box, Flex, Heading, Button, Checkbox } from '@chakra-ui/react'
-import { Github } from 'lucide-react'
+import { Github, Twitter } from 'lucide-react'
 import { useI18n } from './i18n'
 import { ImageInput } from './components/ImageInput'
 import { ResizeControls } from './components/ResizeControls'
@@ -219,6 +219,12 @@ export function App() {
     }
   }, [processedUrl])
 
+  // Share to X (Twitter)
+  const handleShareX = useCallback(() => {
+    const text = encodeURIComponent('#NTSC_VHS_EMU\nhttps://ntsc.narazaka.net/')
+    window.open(`https://x.com/intent/tweet?text=${text}`, '_blank')
+  }, [])
+
   return (
     <Flex
       h="100vh"
@@ -274,6 +280,9 @@ export function App() {
                   {t('app.share')}
                 </Button>
               )}
+              <Button variant="outline" onClick={handleShareX} p="1" minW="auto" title={t('app.shareX')}>
+                <Twitter size={16} />
+              </Button>
             </>
           )}
           <Checkbox.Root checked={realtime} onCheckedChange={(e) => setRealtime(!!e.checked)}>
