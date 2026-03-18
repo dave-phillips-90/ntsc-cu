@@ -100,8 +100,11 @@ export function App() {
   }, [])
 
   // Compose image with text overlays
+  // Compose image: draw text onto the cropped/original image
+  // Uses croppedOriginalUrl if available (same as TextOverlay preview)
   const composeImage = useCallback(async (): Promise<Uint8Array> => {
-    if (!originalUrl || !imageSize || textOverlays.length === 0) {
+    const srcUrl = croppedOriginalUrl ?? originalUrl
+    if (!srcUrl || !imageSize || textOverlays.length === 0) {
       return imageData!.slice()
     }
     return new Promise((resolve) => {
@@ -136,9 +139,9 @@ export function App() {
           blob.arrayBuffer().then(buf => resolve(new Uint8Array(buf)))
         }, 'image/png')
       }
-      img.src = originalUrl
+      img.src = srcUrl
     })
-  }, [originalUrl, imageSize, imageData, textOverlays])
+  }, [originalUrl, croppedOriginalUrl, imageSize, imageData, textOverlays])
 
   // Process function
   const process = useCallback(async () => {
@@ -153,9 +156,16 @@ export function App() {
       outputHeight: settings.outputHeight === -1 ? imageSize.height : settings.outputHeight,
     }
 
+    const hasText = textOverlays.some(t => t.text)
     const data = await composeImage()
+
+    // If text overlays are present, compose already includes crop — skip it in worker
+    const workerSettings = hasText && (croppedOriginalUrl || settings.crop)
+      ? { ...resolvedSettings, crop: null }
+      : resolvedSettings
+
     workerRef.current.postMessage(
-      { type: 'process', id, imageData: data, width: imageSize.width, height: imageSize.height, params, settings: resolvedSettings },
+      { type: 'process', id, imageData: data, width: imageSize.width, height: imageSize.height, params, settings: workerSettings },
       [data.buffer]
     )
   }, [imageData, imageSize, params, settings, workerReady, composeImage])
