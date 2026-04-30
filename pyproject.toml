@@ -1,14 +1,21 @@
 # ---- Project Info and Dependencies ----
 [project.urls]
 Repository = "https://github.com/dave-phillips-90/ntsc-cu"
-Homepage = "https://ntsc.narazaka.net/"
+# Homepage = "https://ntsc.narazaka.net/"
 # Documentation = "https://..."
 
 [project]
-name = "ntsc"
+name = "ntsc-cu"
+authors = [
+  { name = "zhuker" },
+]
+maintainers = [
+  { name = "Narazaka" },
+  { name = "Dave Phillips", email = "david.sr.phillips@outlook.com" },
+]
 description = "NTSC/VHS video artifact emulation for images"
 license = { file = "LICENSE" }
-requires-python = ">=3.10,<4.0"
+requires-python = ">=3.11,<4.0"
 dynamic = ["version"]
 
 classifiers = [
@@ -18,7 +25,7 @@ classifiers = [
     "Operating System :: OS Independent",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
     "Typing :: Typed",
     # Include this to avoid accidentally publishing to PyPI:
     "Private :: Do Not Upload",
@@ -26,9 +33,9 @@ classifiers = [
 
 # ---- Main dependencies ----
 dependencies = [
-    "numpy>=2.2.6",
+    "numpy>=2.4.4",
     "opencv-python>=4.13.0.92",
-    "scipy>=1.15.3",
+    "scipy>=1.17.1",
 ]
 
 # ---- Dev dependencies ----
@@ -39,9 +46,14 @@ dev = [
     "funlog>=0.2.1",
     "pytest>=9.0.2",
     "pytest-sugar>=1.1.1",
-    "rich>=14.3.0",
+    "rich>=15.0.0",
     "ruff>=0.14.14",
 ]
+
+[project.optional-dependencies]
+cuda = ["cupy>=14.0.1"]
+cuda12x = ["cupy-cuda12x>=14.0.1"]
+cuda13x = ["cupy-cuda13x>=14.0.1"]
 
 [project.scripts]
 ntsc-cu = "ntsc-cu.cli:main" # CLI entry point
