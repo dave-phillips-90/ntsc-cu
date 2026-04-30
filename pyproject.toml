@@ -1,10 +1,135 @@
+# ---- Project Info and Dependencies ----
+[project.urls]
+Repository = "https://github.com/dave-phillips-90/ntsc-cu"
+Homepage = "https://ntsc.narazaka.net/"
+# Documentation = "https://..."
+
 [project]
 name = "ntsc"
-version = "0.1.0"
 description = "NTSC/VHS video artifact emulation for images"
-requires-python = ">=3.10"
+license = { file = "LICENSE" }
+requires-python = ">=3.10,<4.0"
+dynamic = ["version"]
+
+classifiers = [
+    "Development Status :: 4 - Beta",
+    # "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Typing :: Typed",
+    # Include this to avoid accidentally publishing to PyPI:
+    "Private :: Do Not Upload",
+]
+
+# ---- Main dependencies ----
 dependencies = [
     "numpy>=2.2.6",
     "opencv-python>=4.13.0.92",
     "scipy>=1.15.3",
 ]
+
+# ---- Dev dependencies ----
+[dependency-groups]
+dev = [
+    "basedpyright>=1.37.2",
+    "codespell>=2.4.1",
+    "funlog>=0.2.1",
+    "pytest>=9.0.2",
+    "pytest-sugar>=1.1.1",
+    "rich>=14.3.0",
+    "ruff>=0.14.14",
+]
+
+[project.scripts]
+ntsc-cu = "ntsc-cu.cli:main" # CLI entry point
+
+[project.gui-scripts]
+ntsc-cu-gui = "ntsc-cu.gui:main" # GUI entry point
+
+# ---- Build system ----
+
+# Dynamic versioning from:
+# https://github.com/ninoseki/uv-dynamic-versioning/
+
+[build-system]
+requires = ["hatchling", "uv-dynamic-versioning"]
+build-backend = "hatchling.build"
+
+[tool.hatch.version]
+source = "uv-dynamic-versioning"
+# Note JSON schemas don't seem to be right for tool.hatch.version.source so
+# this may cause false warnings in IDEs.
+# https://github.com/ninoseki/uv-dynamic-versioning/issues/21
+
+[tool.uv-dynamic-versioning]
+vcs = "git"
+style = "pep440"
+bump = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/ntsc-cu"] # The source location for the package.
+
+
+# ---- Settings ----
+[tool.ruff]
+# Matches black standard line length
+line-length = 88
+
+[tool.ruff.lint]
+select = [
+    "E", "W",  # pycodestyle
+    "F",       # Pyflakes
+    "I",       # isort
+    "B",       # flake8-bugbear
+    "UP",      # pyupgrade
+    "S",       # flake8-bandit
+    "SIM",     # flake8-simplify
+    "PTH",     # flake8-use-pathlib
+    "N",       # pep8-naming
+    "RUF",     # Ruff-specific rules
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**/*.py" = ["S101"] # Disable assert warnings for test files
+
+[tool.basedpyright]
+include = ["src", "tests"]
+
+executionEnvironments = [
+  { root = "tests", reportOptionalSubscript = "none", reportArgumentType = "none", reportUnknownMemberType = "none" }
+]
+
+reportIgnoreCommentWithoutRule = false
+reportUnnecessaryTypeIgnoreComment = false
+
+reportMissingTypeStubs = false
+reportUnusedCallResult = false
+reportAny = false
+reportExplicitAny = false
+reportImplicitStringConcatenation = false
+reportUnreachable = false
+# reportPrivateImportUsage = false
+# reportPrivateLocalImportUsage = false
+# reportMissingImports = false
+# reportUnnecessaryIsInstance = false
+# reportUnknownVariableType = false
+# reportUnknownArgumentType = false
+
+[tool.codespell]
+# Add here as needed:
+# ignore-words-list = "foo,bar"
+# skip = "foo.py,bar.py"
+
+[tool.pytest.ini_options]
+python_files = ["*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+testpaths = [
+    "src",
+    "tests",
+]
+norecursedirs = []
+filterwarnings = []

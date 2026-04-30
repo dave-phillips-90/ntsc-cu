@@ -105,20 +105,9 @@ venv.bak/
 
 .idea/
 .claude/
+.vscode/
+
 node_modules/
 web/public/ntsc.py
 web/public/ringPattern.npy
 web/styled-system/
-
-# Test output images
-out_*.png
-out_*.jpg
-ss_*.png
-test_*.png
-test_*.jpg
-vrc_*.png
-vrc2_*.png
-
-# User images
-VRChat_*.png
-2024-*.png
