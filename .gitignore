@@ -105,7 +105,9 @@ venv.bak/
 
 .idea/
 .claude/
-.vscode/
+
+# Ignore user defined settings
+.vscode/settings.json
 
 node_modules/
 web/public/ntsc.py

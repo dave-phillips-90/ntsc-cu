@@ -1,0 +1,11 @@
+{
+    "recommendations": [
+        "ms-python.python",
+        "ms-python.debugpy",
+        "ms-python.vscode-python-envs",
+        "detachhead.basedpyright",
+        "charliermarsh.ruff",
+        "fill-labs.dependi",
+        "tamasfe.even-better-toml"
+    ]
+}
