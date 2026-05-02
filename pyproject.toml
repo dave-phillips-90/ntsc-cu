@@ -56,10 +56,10 @@ cuda12x = ["cupy-cuda12x>=14.0.1"]
 cuda13x = ["cupy-cuda13x>=14.0.1"]
 
 [project.scripts]
-ntsc-cu = "ntsc-cu.cli:main" # CLI entry point
+ntsc-cu = "ntsc_cu.cli:main" # CLI entry point
 
 [project.gui-scripts]
-ntsc-cu-gui = "ntsc-cu.gui:main" # GUI entry point
+ntsc-cu-gui = "ntsc_cu.gui:main" # GUI entry point
 
 # ---- Build system ----
 
@@ -106,6 +106,14 @@ select = [
 
 [tool.ruff.lint.per-file-ignores]
 "tests/**/*.py" = ["S101"] # Disable assert warnings for test files
+
+[tool.ruff.lint.isort]
+combine-as-imports = true
+force-single-line = false
+lines-after-imports = 2
+known-first-party = ["my_project_package"]
+section-order = ["future", "standard-library", "third-party", "first-party", "local-folder"]
+
 
 [tool.basedpyright]
 include = ["src", "tests"]
